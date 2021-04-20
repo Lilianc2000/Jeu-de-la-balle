@@ -1,0 +1,55 @@
+								  RFC 1
+                         Title:   Barking Protocole
+                        Author:   CyberLog A1 TP1
+                          Date:   December 2020
+                       Version:   1.0
+
+I : Introduction
+
+  Dans le cadre de l'enseignement de réseaux à l'ENSIBS, nous,
+étudiants en Cybersécurité du Logiciel A1 TP1, devons implémenter
+un protocole afin de faire jouer plusieurs pc entre eux. Un paquet
+sera envoyé sur le réseau et devra être renvoyé sur les autres pc 
+du réseau jusqu'à la fin du jeu. Une fois le jeu terminé, chaque 
+participant recevra un message contenant le vainqueur.
+
+II : Fontionnement
+
+  Nous créons un protocole de la couche applicatif de du modèle OSI.
+Ce protocole se servira du protocole UDP pour la couche transport, 
+et le protocole IP pour la couche réseau. Nous utilisons notre 
+protocole avec la librairie Scapy Python. Pour commencer le jeu,
+le serveur va envoyer une première fois la balle à un participant. Ce 
+dernier va incrémenter son score personnel et renvoyer à son tour la 
+balle à laquelle on va décrémenter le compteur. Chaque particpant sera 
+tiré au hasard dans une liste d'adresses IP définie au préalable. Le 
+jeu se termine lorsque le compteur de la balle sera à 0. A ce moment
+le serveur envoie une requête à chaque participant pour connaitre le 
+score de chacun. Puis une fois tout les scores reçus, le serveur tri 
+les scores et envoie un paquet contenant l'indexe du participant à 
+chacun.
+
+III : Partie technique
+
+  On conserve une liste des adresses IP disponibles.
+On spécifie entre autre l'interface utilisée et le nombre de rebond.
+
+Le paquet contient deux champs. Le premier est nommé compteur de type IntField
+il permet de compter le nombre de rebonds restants à faire pendant le jeu. Le
+second champ de type IntField également correspond au flag, cela nous permet de
+différencier différentes phases de fonctionnement.
+
+Si le flag vaut 0 cela signifie qu'on fait un envoi de balle. 
+Le compteur spécifie le nombre de rebond restant.
+
+Si le flag vaut 1 cela signifie qu'on a plus de rebond disponible (on l'indique au serveur).
+
+Si le flag vaut 2 cela signifie qu'on demande notre score.
+
+Si le flag vaut 3 cela signifie qu'on envoie notre score.
+Le compteur contient notre score.
+
+Si le flag vaut 4 cela signifie qu'on annonce le vainqueur.
+Le compteur contient la position de l'adresse IP gagnante dans la liste d'adresses IP.
+
+
